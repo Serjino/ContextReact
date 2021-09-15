@@ -2,9 +2,7 @@ import React, { useContext, useState } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './menu.css';
 
-export function Menu({increaseView} : any) {
-
-  increaseView
+export function Menu() {
 
 
   return (
