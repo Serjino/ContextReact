@@ -11,9 +11,26 @@ import { Nav } from './Nav';
 import { PageHeading } from './PageHeading';
 import { createBrowserHistory } from "history";
 const customHistory = createBrowserHistory();
+export const PageViewsContext = React.createContext({})
 
 export function App() {
 
+    const [views, setViews] = useState({
+        main: 0,
+        array: 0,
+        json: 0,
+        object: 0,
+        set: 0,
+    });
+
+    function increaseViews(page: keyof typeof views) {
+        setViews((views) => {
+            return {
+                ...views,
+                [page]: views[page] + 1
+            }
+        });
+    }
 
     let pages = globals.text.map(page => {
         return (
@@ -24,10 +41,15 @@ export function App() {
     });
 
     return (
+
         <div>
+            <PageViewsContext.Provider value={{
+                ...views,
+                increaseViews: increaseViews,
+            }}>
+                <Nav />
                 <div className={styles.page}>
 
-                    {/* <Router history={customHistory}> */}
                     <Switch >
                         {pages}
                         <Route path="/">
@@ -35,8 +57,9 @@ export function App() {
                             <Menu />
                         </Route>
                     </Switch>
-                    {/* </Router> */}
+
                 </div>
+            </PageViewsContext.Provider>
         </div >
     );
 }
