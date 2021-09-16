@@ -15,20 +15,29 @@ export const PageViewsContext = React.createContext({})
 
 export function App() {
 
-    const [views, setViews] = useState({
-        main: 0,
-        array: 0,
-        json: 0,
-        object: 0,
-        set: 0,
-    });
+    let viewCountStorage = localStorage.getItem('views')
+
+    const [views, setViews] = useState(
+        viewCountStorage != null ?
+            JSON.parse(viewCountStorage)
+            : {
+                main: 0,
+                array: 0,
+                json: 0,
+                object: 0,
+                set: 0,
+            });
+
+    let dataBase = localStorage.setItem('views', JSON.stringify(views))
 
     function increaseViews(page: keyof typeof views) {
-        setViews((views) => {
+        setViews((views: { [x: string]: number; }) => {
+            if (typeof page != 'symbol') {
             return {
                 ...views,
                 [page]: views[page] + 1
             }
+        }
         });
     }
 
